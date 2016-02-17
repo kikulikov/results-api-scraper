@@ -9,15 +9,16 @@ import (
 
 // http://marcio.io/2015/07/supercharging-atom-editor-for-go-development/
 
-const rawurl = "https://qa-api.efset.org/test-results"
 const dateFormat = "2006-01-02T15:04:05.000Z07:00"
 
-var secretKey string
-var fromDate string
-var toDate string
-var tailInterval int
-
 func main() {
+	var requestURL string
+	var secretKey string
+	var fromDate string
+	var toDate string
+	var tailInterval int
+
+	flag.StringVar(&requestURL, "url", "", "URL")
 	flag.StringVar(&secretKey, "key", "", "API Key")
 	flag.StringVar(&fromDate, "from", "", "Date FROM")
 	flag.StringVar(&toDate, "to", "", "Date TO")
@@ -27,20 +28,24 @@ func main() {
 	WriteHeaders()
 
 	if tailInterval > 0 {
-		var now = time.Now().UTC()
-		var begin = now.Add(time.Duration(-1*tailInterval) * time.Second).Format(dateFormat)
-		var end = now.Format(dateFormat)
-
-		for {
-			callAPI(PrepareRequest(rawurl, begin, end, secretKey))
-			time.Sleep(time.Duration(tailInterval) * time.Second)
-		}
+		tail(requestURL, secretKey, tailInterval)
 	} else {
-		callAPI(PrepareRequest(rawurl, fromDate, toDate, secretKey))
+		callAPI(PrepareRequest(requestURL, fromDate, toDate, secretKey), secretKey)
 	}
 }
 
-func callAPI(req http.Request) {
+func tail(rawurl string, secretKey string, tailInterval int) {
+	var now = time.Now().UTC()
+	var begin = now.Add(time.Duration(-1*tailInterval) * time.Second).Format(dateFormat)
+	var end = now.Format(dateFormat)
+
+	for {
+		callAPI(PrepareRequest(rawurl, begin, end, secretKey), secretKey)
+		time.Sleep(time.Duration(tailInterval) * time.Second)
+	}
+}
+
+func callAPI(req http.Request, secretKey string) {
 	resp := MakeRequest(&req)
 
 	if resp.StatusCode != 200 {
@@ -62,7 +67,7 @@ func callAPI(req http.Request) {
 
 		if len(parsed.Next) > 0 {
 			// fmt.Println(PrepareRequestWhenFullURL(parsed.Next, secretKey))
-			callAPI(PrepareRequestWhenFullURL(parsed.Next, secretKey))
+			callAPI(PrepareRequestWhenFullURL(parsed.Next, secretKey), secretKey)
 		}
 	}
 }
