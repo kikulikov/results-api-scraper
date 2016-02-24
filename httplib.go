@@ -5,8 +5,12 @@ import (
 	"net/url"
 )
 
+// HTTPLib http lib
+type HTTPLib struct {
+}
+
 // PrepareRequestWhenFullURL builds a request when full URL provided
-func PrepareRequestWhenFullURL(rawurl string, key string) http.Request {
+func (httpLib HTTPLib) PrepareRequestWhenFullURL(rawurl string, key string) http.Request {
 
 	u, err := url.Parse(rawurl)
 	if err != nil {
@@ -23,8 +27,8 @@ func PrepareRequestWhenFullURL(rawurl string, key string) http.Request {
 	return *req
 }
 
-// PrepareRequest builds a request
-func PrepareRequest(rawurl string, from string, to string, key string) http.Request {
+// PrepareRequest builds a request from parameters
+func (httpLib HTTPLib) PrepareRequest(rawurl string, from string, to string, key string) http.Request {
 
 	u, err := url.Parse(rawurl)
 	if err != nil {
@@ -48,7 +52,7 @@ func PrepareRequest(rawurl string, from string, to string, key string) http.Requ
 }
 
 // MakeRequest makes a request. Doesn't close the body.
-func MakeRequest(req *http.Request) *http.Response {
+func (httpLib HTTPLib) MakeRequest(req *http.Request) *http.Response {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 

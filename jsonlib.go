@@ -2,6 +2,10 @@ package main
 
 import "encoding/json"
 
+// JSONLib json lib
+type JSONLib struct {
+}
+
 // APIResponse APIResponse
 type APIResponse struct {
 	TestResults []TestResult `json:"test_results"`
@@ -20,12 +24,14 @@ type TestResult struct {
 
 // Scores Scores
 type Scores struct {
-	Level    string `json:"level"`
-	Combined string `json:"combined"`
+	Combined    string `json:"combined"`
+	Level       string `json:"level"`
+	RawScore    string `json:"raw_score"`
+	MaxRawScore string `json:"max_raw_score"`
 }
 
 // ParseResponse unmarshals the json
-func ParseResponse(body []byte) APIResponse {
+func (jsonLib JSONLib) ParseResponse(body []byte) APIResponse {
 	var m APIResponse
 	err := json.Unmarshal(body, &m)
 
