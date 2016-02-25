@@ -37,6 +37,7 @@ func (resultsWriter CSVResultsWriter) Write(items []string) {
 
 	if hasHeaders == false {
 		writeItems(headers)
+		hasHeaders = true
 	}
 
 	writeItems(items)

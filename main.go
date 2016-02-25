@@ -4,6 +4,7 @@ import (
 	"flag"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 // http://marcio.io/2015/07/supercharging-atom-editor-for-go-development/
@@ -63,8 +64,8 @@ func callOnRequest(req http.Request, secretKey string) {
 				item.Status,
 				item.Scores.Combined,
 				item.Scores.Level,
-				item.Scores.RawScore,
-				item.Scores.MaxRawScore,
+				strconv.Itoa(item.Scores.RawScore),
+				strconv.Itoa(item.Scores.MaxRawScore),
 			}
 			resultsWriter.Write(record)
 		}

@@ -26,8 +26,8 @@ type TestResult struct {
 type Scores struct {
 	Combined    string `json:"combined"`
 	Level       string `json:"level"`
-	RawScore    string `json:"raw_score"`
-	MaxRawScore string `json:"max_raw_score"`
+	RawScore    int    `json:"raw_score"`
+	MaxRawScore int    `json:"max_raw_score"`
 }
 
 // ParseResponse unmarshals the json
