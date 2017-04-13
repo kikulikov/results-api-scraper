@@ -26,10 +26,10 @@ var headers = []string{
 	"test_start_time",
 	"test_finish_time",
 	"status",
-	"scores.combined",
-	"scores.level",
-	"scores.raw_score",
-	"scores.max_raw_score",
+	"level",
+	"score",
+	"reading.score",
+	"listening.score",
 }
 
 // Write writes

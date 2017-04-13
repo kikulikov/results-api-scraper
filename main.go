@@ -62,10 +62,10 @@ func callOnRequest(req http.Request, secretKey string) {
 				item.StartTime,
 				item.FinishTime,
 				item.Status,
-				item.Scores.Combined,
 				item.Scores.Level,
-				strconv.Itoa(item.Scores.RawScore),
-				strconv.Itoa(item.Scores.MaxRawScore),
+				strconv.Itoa(item.Scores.Score),
+				strconv.Itoa(item.Scores.Reading.Score),
+				strconv.Itoa(item.Scores.Listening.Score),
 			}
 			resultsWriter.Write(record)
 		}
